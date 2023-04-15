@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  iOs_assignment4_M1
 //
-//  Created by Murtaza Haider Naqvi on 2023-03-25.
+//  Created by Niraj Nepal on 2023-04-15.
 //
 
 import UIKit
@@ -91,6 +91,18 @@ class ViewController: UIViewController, MKMapViewDelegate {
             print("Unknown location authorization status")
         }
     }
+    
+    private func displayPlacesList(){
+        
+        let placesController = PlacesTableViewController()
+        placesController.modalPresentationStyle = .pageSheet
+        
+        if let list = placesController.sheetPresentationController{
+            list.prefersGrabberVisible = true
+            list.detents = [.medium(), .large()]
+            present(placesController, animated: true)
+        }
+    }
 
     private func findNearbyPlaces(by query: String){
         // clear all annotations first
@@ -110,6 +122,13 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 self.mapView.addAnnotation(place)
                 
             }
+            
+            self.displayPlacesList()
+            
+            // Make searchTextField the first responder again
+           DispatchQueue.main.async {
+               self.searchTextField.becomeFirstResponder()
+           }
         }
     }
 }
